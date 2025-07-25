@@ -129,14 +129,23 @@ const LightRays: React.FC<LightRaysProps> = ({
     const initializeWebGL = async () => {
       if (!containerRef.current) return;
 
+      // Debug: log container size
+      console.log("LightRays container size", containerRef.current.clientWidth, containerRef.current.clientHeight);
+
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       if (!containerRef.current) return;
 
-      const renderer = new Renderer({
-        dpr: Math.min(window.devicePixelRatio, 2),
-        alpha: true,
-      });
+      let renderer;
+      try {
+        renderer = new Renderer({
+          dpr: Math.min(window.devicePixelRatio, 2),
+          alpha: true,
+        });
+      } catch (e) {
+        console.error("WebGL Renderer creation failed", e);
+        return;
+      }
       rendererRef.current = renderer;
 
       const gl = renderer.gl;
