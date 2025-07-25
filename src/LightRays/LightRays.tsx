@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef, useEffect, useState } from "react";
 import { Renderer, Program, Triangle, Mesh } from "ogl";
 
@@ -31,8 +29,6 @@ interface LightRaysProps {
 
 const DEFAULT_COLOR = "#ffffff";
 
-type UniformValue = number | number[] | boolean | [number, number] | [number, number, number];
-
 const hexToRgb = (hex: string): [number, number, number] => {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return m
@@ -47,7 +43,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
 const getAnchorAndDir = (
   origin: RaysOrigin,
   w: number,
-  h: number,
+  h: number
 ): { anchor: [number, number]; dir: [number, number] } => {
   const outside = 0.2;
   switch (origin) {
@@ -66,15 +62,9 @@ const getAnchorAndDir = (
     case "bottom-right":
       return { anchor: [w, (1 + outside) * h], dir: [0, -1] };
     default: // "top-center"
-      const yOffset = Math.max(-0.2 * h, -80); // never closer than -80px above
-      return { anchor: [0.5 * w, yOffset], dir: [0, 1] };
+      return { anchor: [0.5 * w, -outside * h], dir: [0, 1] };
   }
 };
-
-// Utility to detect mobile devices
-function isMobile() {
-  return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
-}
 
 const LightRays: React.FC<LightRaysProps> = ({
   raysOrigin = "top-center",
@@ -92,12 +82,12 @@ const LightRays: React.FC<LightRaysProps> = ({
   className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const uniformsRef = useRef<Record<string, { value: UniformValue }> | null>(null);
+  const uniformsRef = useRef<any>(null);
   const rendererRef = useRef<Renderer | null>(null);
   const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const smoothMouseRef = useRef({ x: 0.5, y: 0.5 });
   const animationIdRef = useRef<number | null>(null);
-  const meshRef = useRef<Mesh | null>(null);
+  const meshRef = useRef<any>(null);
   const cleanupFunctionRef = useRef<(() => void) | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -110,7 +100,7 @@ const LightRays: React.FC<LightRaysProps> = ({
         const entry = entries[0];
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     );
 
     observerRef.current.observe(containerRef.current);
@@ -134,23 +124,14 @@ const LightRays: React.FC<LightRaysProps> = ({
     const initializeWebGL = async () => {
       if (!containerRef.current) return;
 
-      // Debug: log container size
-      console.log("LightRays container size", containerRef.current.clientWidth, containerRef.current.clientHeight);
-
       await new Promise((resolve) => setTimeout(resolve, 10));
 
       if (!containerRef.current) return;
 
-      let renderer;
-      try {
-        renderer = new Renderer({
-          dpr: Math.min(window.devicePixelRatio, 2),
-          alpha: true,
-        });
-      } catch (e) {
-        console.error("WebGL Renderer creation failed", e);
-        return;
-      }
+      const renderer = new Renderer({
+        dpr: Math.min(window.devicePixelRatio, 2),
+        alpha: true,
+      });
       rendererRef.current = renderer;
 
       const gl = renderer.gl;

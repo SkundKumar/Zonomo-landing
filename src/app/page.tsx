@@ -11,6 +11,12 @@ import { Globe } from "lucide-react";
 import CurvedLoop from "../CurvedLoop/CurvedLoop";
 import ScrollStack, { ScrollStackItem } from "../ScrollStack/ScrollStack";
 
+// Utility to detect mobile devices
+function isMobile() {
+  if (typeof navigator === 'undefined') return false;
+  return /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+}
+
 export default function Home() {
   const rotatingWords = ["Modernizing", "Transforming", "Revolutionizing"];
   const [currentWordIdx, setCurrentWordIdx] = useState(0);
@@ -71,56 +77,56 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center overflow-hidden border border-white/10">
-      {/* Light Rays Background fills the hero section */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#b3c6ff"
-          raysSpeed={1.5}
-          lightSpread={0.6}
-          rayLength={2.8}
-          fadeDistance={1.2}
-          saturation={1}
-          followMouse={true}
-          noiseAmount={0.1}
-          distortion={0.03}
-          className="custom-rays w-full h-full"
-        />
+      {/* Rays+Navbar+Hero Container */}
+      <div className="relative w-full" style={{ minHeight: '600px' }}>
+        {/* LightRays as background */}
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#b3c6ff"
+            raysSpeed={1.5}
+            lightSpread={0.5}
+            rayLength={1.8}
+            fadeDistance={isMobile() ? 9.2 : 1.2}
+            saturation={1}
+            followMouse={true}
+            noiseAmount={0.1}
+            distortion={0.03}
+            className="custom-rays w-full h-full"
+          />
+        </div>
+        {/* Navbar */}
+        <nav className="relative z-10 flex items-center justify-between w-full max-w-3xl mx-auto mt-8 px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+          <div className="font-extrabold text-2xl tracking-tight text-white">Zonomo</div>
+          <div className="flex items-center gap-8 font-medium text-white">
+            <a href="#" className="hover:underline">About us</a>
+            <a href="#" className="ml-4 py-2 md:px-5 rounded-full bg-white/80 text-black font-semibold shadow-lg hover:bg-white transition">Get Started</a>
+          </div>
+        </nav>
+        {/* Hero Content overlays Light Rays */}
+        <main className="relative z-10 flex flex-col items-center justify-center mt-30 w-full px-4 py-24 bg-transparent">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-center text-white mb-4 drop-shadow-lg" style={{ position: 'relative', height: '90px' }}>
+            <span
+              ref={wordRef}
+              className="block"
+              style={{ minWidth: 220, display: 'inline-block', position: 'relative' }}
+            >
+              {rotatingWords[currentWordIdx]}
+            </span>
+            <span className="block text-5xl sm:text-6xl md:text-7xl font-bold mt-2 relative z-10">
+              urban services
+            </span>
+          </h1>
+          <p className="text-lg mt-15 sm:text-xl text-white/90 font-medium text-center mb-40 max-w-2xl">
+            Verified professionals | Instant quotes | AI-powered matching.
+          </p>
+          <div className="w-full flex justify-center absolute left-0 right-0 bottom-25">
+            <WrapButton className="mt-10" href="/docs/components/card-carousel">
+              <Globe className="animate-spin" /> Get started
+            </WrapButton>
+          </div>
+        </main>
       </div>
-      {/* Navbar */}
-      <nav className="relative z-10 flex items-center justify-between w-full max-w-3xl mx-auto mt-8 px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
-        <div className="font-extrabold text-2xl tracking-tight text-white">Zonomo</div>
-        <div className="flex items-center gap-8 font-medium text-white">
-          
-          <a href="#" className="hover:underline">About us</a>
-          <a href="#" className="ml-4 py-2 md:px-5 rounded-full bg-white/80 text-black font-semibold shadow-lg hover:bg-white transition">Get Started</a>
-        </div>
-      </nav>
-      {/* Hero Content */}
-      <main className="relative z-10 flex flex-col items-center justify-center mt-30 flex-1 w-full px-4 py-24">
-        
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-center text-white mb-4 drop-shadow-lg" style={{ position: 'relative', height: '90px' }}>
-          <span
-            ref={wordRef}
-            className="block"
-            style={{ minWidth: 220, display: 'inline-block', position: 'relative' }}
-          >
-            {rotatingWords[currentWordIdx]}
-          </span>
-          <span className="block text-5xl sm:text-6xl md:text-7xl font-bold mt-2 relative z-10">
-            urban services
-          </span>
-        </h1>
-        <p className="text-lg mt-15 sm:text-xl text-white/90 font-medium text-center mb-40 max-w-2xl">
-          Verified professionals | Instant quotes | AI-powered matching.
-        </p>
-       
-        <div className="w-full flex justify-center absolute left-0 right-0 bottom-25">
-          <WrapButton className="mt-10" href="/docs/components/card-carousel">
-            <Globe className="animate-spin" /> Get started
-          </WrapButton>
-        </div>
-      </main>
       {/* CurvedLoop Filler Section */}
       <section className="w-full flex justify-center items-center py-0 bg-transparent mt-20 mb-10">
         <CurvedLoop marqueeText="Discover the future of urban services • Fast • Reliable • Smart •" speed={2} curveAmount={300} direction="left" />
