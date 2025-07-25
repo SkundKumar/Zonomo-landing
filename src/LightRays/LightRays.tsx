@@ -170,19 +170,7 @@ void main() {
   gl_Position = vec4(position, 0.0, 1.0);
 }`;
 
-      // Choose shader based on device
-      const frag = isMobile()
-        ? `precision mediump float;
-           uniform vec2 iResolution;
-           void main() {
-             vec2 uv = gl_FragCoord.xy / iResolution.xy;
-             vec2 lightPos = vec2(0.5, 0.0);
-             float dist = distance(uv, lightPos);
-             float intensity = 1.0 - smoothstep(0.0, 0.6, dist);
-             intensity *= 1.0 - uv.y;
-             gl_FragColor = vec4(vec3(1.0), intensity * 0.7);
-           }`
-        : `precision highp float;
+      const frag = `precision highp float;
 
 uniform float iTime;
 uniform vec2  iResolution;
