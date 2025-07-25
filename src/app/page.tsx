@@ -81,7 +81,7 @@ export default function Home() {
           rayLength={2.8}
           fadeDistance={1.2}
           saturation={1}
-          followMouse={true`2234`}
+          followMouse={true}
           noiseAmount={0.1}
           distortion={0.03}
           className="custom-rays w-full h-full"
