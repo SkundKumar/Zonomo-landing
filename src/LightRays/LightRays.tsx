@@ -31,6 +31,8 @@ interface LightRaysProps {
 
 const DEFAULT_COLOR = "#ffffff";
 
+type UniformValue = number | number[] | boolean | [number, number] | [number, number, number];
+
 const hexToRgb = (hex: string): [number, number, number] => {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return m
