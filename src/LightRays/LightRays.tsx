@@ -151,6 +151,8 @@ const LightRays: React.FC<LightRaysProps> = ({
       const gl = renderer.gl;
       gl.canvas.style.width = "100%";
       gl.canvas.style.height = "100%";
+      // Debug: force canvas background to red
+      gl.canvas.style.background = "red";
 
       while (containerRef.current.firstChild) {
         containerRef.current.removeChild(containerRef.current.firstChild);
