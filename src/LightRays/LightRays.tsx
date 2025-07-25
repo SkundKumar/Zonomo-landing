@@ -66,7 +66,8 @@ const getAnchorAndDir = (
     case "bottom-right":
       return { anchor: [w, (1 + outside) * h], dir: [0, -1] };
     default: // "top-center"
-      return { anchor: [0.5 * w, -outside * h], dir: [0, 1] };
+      const yOffset = Math.max(-0.2 * h, -80); // never closer than -80px above
+      return { anchor: [0.5 * w, yOffset], dir: [0, 1] };
   }
 };
 

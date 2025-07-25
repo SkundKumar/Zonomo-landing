@@ -81,7 +81,7 @@ export default function Home() {
           rayLength={2.8}
           fadeDistance={1.2}
           saturation={1}
-          followMouse={false}
+          followMouse={true}
           noiseAmount={0.1}
           distortion={0.03}
           className="custom-rays w-full h-full"
@@ -91,9 +91,9 @@ export default function Home() {
       <nav className="relative z-10 flex items-center justify-between w-full max-w-3xl mx-auto mt-8 px-6 py-3 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
         <div className="font-extrabold text-2xl tracking-tight text-white">Zonomo</div>
         <div className="flex items-center gap-8 font-medium text-white">
-          <a href="#" className="hover:underline">Home</a>
+          
           <a href="#" className="hover:underline">About us</a>
-          <a href="#" className="ml-4 px-5 py-2 rounded-full bg-white/80 text-black font-semibold shadow-lg hover:bg-white transition">Get Started</a>
+          <a href="#" className="ml-4 py-2 md:px-5 rounded-full bg-white/80 text-black font-semibold shadow-lg hover:bg-white transition">Get Started</a>
         </div>
       </nav>
       {/* Hero Content */}

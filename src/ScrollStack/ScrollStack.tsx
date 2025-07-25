@@ -1,4 +1,4 @@
-import React, { ReactNode, useLayoutEffect, useRef, useCallback } from "react";
+import React, { ReactNode, useLayoutEffect, useRef, useCallback, useEffect } from "react";
 import Lenis from "lenis";
 
 export interface ScrollStackItemProps {
@@ -286,6 +286,30 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     setupLenis,
     updateCardTransforms,
   ]);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const scrollTop = el.scrollTop;
+      const scrollHeight = el.scrollHeight;
+      const clientHeight = el.clientHeight;
+      const atTop = scrollTop <= 1;
+      const atBottom = Math.abs(scrollHeight - scrollTop - clientHeight) <= 1;
+
+      // Debug log
+      console.log({ scrollTop, scrollHeight, clientHeight, atTop, atBottom, deltaY: e.deltaY });
+
+      if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        e.preventDefault();
+        window.scrollBy({ top: e.deltaY, behavior: "auto" });
+      }
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
   return (
     <div
